@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Counting App</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.75);
+
+      --blue: #3b82f6;
+      --green: #22c55e;
+      --red: #ef4444;
+
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .stat {
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      border: 3px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .small {
+      width: 150px;
+      height: 150px;
+    }
+
+    .large {
+      width: 190px;
+      height: 190px;
+    }
+
+    .label {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .value {
+      font-size: 2em;
+      font-weight: bold;
+    }
+
+    .subvalue {
+      margin-top: 6px;
+      font-size: 0.9em;
+    }
+
+    .blue { background: var(--blue); }
+    .green { background: var(--green); }
+    .red { background: var(--red); }
+
+    .control {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: none;
+      font-size: 2rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* RESET BUTTON */
+    .reset-btn {
+      margin-top: 10px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #facc15;
+      color: #000;
+      box-shadow: var(--shadow);
+      transition: transform 0.1s ease;
+    }
+
+    .reset-btn:active {
+      transform: scale(0.95);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <!-- Goals -->
+    <div class="row">
+      <button class="control" id="goalsMinus">−</button>
+
+      <div class="stat small green">
+        <div class="label">Goals</div>
+        <div class="value" id="goalsCount">0</div>
+      </div>
+
+      <button class="control" id="goalsPlus">+</button>
+    </div>
+
+    <!-- Total -->
+    <div class="stat large blue">
+      <div class="label">Total Points</div>
+      <div class="value" id="totalPoints">0.0</div>
+    </div>
+
+    <!-- Penalties -->
+    <div class="row">
+      <button class="control" id="penaltiesMinus">−</button>
+
+      <div class="stat small red">
+        <div class="label">Penalties</div>
+        <div class="value" id="penaltiesCount">0</div>
+        <div class="subvalue" id="penaltiesValue">0.0</div>
+      </div>
+
+      <button class="control" id="penaltiesPlus">+</button>
+    </div>
+
+    <!-- RESET BUTTON -->
+    <button class="reset-btn" id="resetBtn">Reset</button>
+
+  </div>
+
+  <script>
+    let goalsCount = 0;
+    let penaltiesCount = 0;
+
+    function updateUI() {
+      const penaltiesValue = penaltiesCount * 0.8;
+      const totalPoints = goalsCount - penaltiesValue;
+
+      document.getElementById("goalsCount").textContent = goalsCount;
+      document.getElementById("penaltiesCount").textContent = penaltiesCount;
+      document.getElementById("penaltiesValue").textContent = penaltiesValue.toFixed(1);
+      document.getElementById("totalPoints").textContent = totalPoints.toFixed(1);
+    }
+
+    document.getElementById("goalsPlus").onclick = () => { goalsCount++; updateUI(); };
+    document.getElementById("goalsMinus").onclick = () => { goalsCount--; updateUI(); };
+
+    document.getElementById("penaltiesPlus").onclick = () => { penaltiesCount++; updateUI(); };
+    document.getElementById("penaltiesMinus").onclick = () => { penaltiesCount--; updateUI(); };
+
+    // RESET FUNCTION
+    document.getElementById("resetBtn").onclick = () => {
+      goalsCount = 0;
+      penaltiesCount = 0;
+      updateUI();
+    };
+
+    updateUI();
+  </script>
+</body>
+</html>
